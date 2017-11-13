@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe 'Integration Test', :type => :request do
+RSpec.describe 'Integration Test', type: :request do
   let(:url) { '/posts/1234?categoryFilter[categoryName][]=food' }
   let(:headers) do
-    { "CONTENT_TYPE" => "application/json", 'X-Key-Inflection' => 'camel' }
+    { 'CONTENT_TYPE' => 'application/json', 'X-Key-Inflection' => 'camel' }
   end
   let(:params) do
     { 'post' => { 'authorName' => 'John Smith' } }
   end
 
   context "when the X-Key-Inflection HTTP header is set to 'camel'" do
-    it "should transform response keys to camel case" do
+    it 'should transform response keys to camel case' do
       put_request
 
       payload = JSON.parse(response.body)
@@ -32,14 +32,14 @@ RSpec.describe 'Integration Test', :type => :request do
 
       req_params = JSON.parse(request.env['params_spy'].to_json).with_indifferent_access
 
-      expect(req_params).to include(postId: "1234")
+      expect(req_params).to include(postId: '1234')
     end
   end
 
-  context "when the X-Key-Inflection HTTP header is not set" do
-    let(:headers) { { "CONTENT_TYPE" => "application/json" } }
+  context 'when the X-Key-Inflection HTTP header is not set' do
+    let(:headers) { { 'CONTENT_TYPE' => 'application/json' } }
 
-    it "should NOT transform response keys" do
+    it 'should NOT transform response keys' do
       put_request
 
       payload = JSON.parse(response.body)
@@ -62,7 +62,7 @@ RSpec.describe 'Integration Test', :type => :request do
 
       req_params = JSON.parse(request.env['params_spy'].to_json).with_indifferent_access
 
-      expect(req_params).to include(postId: "1234")
+      expect(req_params).to include(postId: '1234')
     end
   end
 
