@@ -1,7 +1,8 @@
 # OliveBranch
 
-[![Code Climate](https://codeclimate.com/github/vigetlabs/olive_branch.png)](https://codeclimate.com/github/vigetlabs/olive_branch)
-[![Build Status](https://travis-ci.org/vigetlabs/olive_branch.svg?branch=master)](https://travis-ci.org/vigetlabs/olive_branch)
+[![Maintainability](https://api.codeclimate.com/v1/badges/592cc7b1375885adc557/maintainability)](https://codeclimate.com/github/ericproulx/olive_branch/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/592cc7b1375885adc557/test_coverage)](https://codeclimate.com/github/ericproulx/olive_branch/test_coverage)
+[![Build Status](https://travis-ci.org/ericproulx/olive_branch.svg?branch=master)](https://travis-ci.org/ericproulx/olive_branch)
 
 This gem lets your API users pass in and receive camelCased or dash-cased keys, while your Rails app receives and produces snake_cased ones.
 
