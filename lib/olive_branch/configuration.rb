@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'olive_branch/checks'
 require 'olive_branch/transformations'
 
@@ -12,7 +11,7 @@ module OliveBranch
       @camelize = Transformations.method(:camelize)
       @dasherize = Transformations.method(:dasherize)
       @content_type_check = Checks.method(:content_type_check)
-      @header_key = 'HTTP_X_KEY_INFLECTION'
+      @header_key = 'HTTP_X_KEY_INFLECTION'.freeze
     end
   end
 end

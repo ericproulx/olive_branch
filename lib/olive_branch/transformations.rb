@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 class Transformations
   class << self
     def transform(value, transform_method)
@@ -24,8 +23,8 @@ class Transformations
       req.request_parameters
       req.query_parameters
 
-      env['action_dispatch.request.request_parameters'].deep_transform_keys!(&:underscore)
-      env['action_dispatch.request.query_parameters'].deep_transform_keys!(&:underscore)
+      env['action_dispatch.request.request_parameters'.freeze].deep_transform_keys!(&:underscore)
+      env['action_dispatch.request.query_parameters'.freeze].deep_transform_keys!(&:underscore)
     end
   end
 end

@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'olive_branch/transformations'
 require 'olive_branch/configuration'
 require 'json'
@@ -17,11 +16,11 @@ module OliveBranch
 
     def _call(env)
       inflection = env.fetch(OliveBranch.configuration.header_key, OliveBranch.configuration.default_inflection)
-      Transformations.underscore_params(env) if transform_request_params?(inflection, env['CONTENT_TYPE'])
+      Transformations.underscore_params(env) if transform_request_params?(inflection, env['CONTENT_TYPE'.freeze])
       status, headers, body = @app.call(env)
       return [status, headers, body] unless transform_body?(inflection, headers)
       new_body = transform_body(body, inflection)
-      headers['Content-Length'] = new_body.length.to_s
+      headers['Content-Length'.freeze] = new_body.length.to_s
       [status, headers, new_body]
     end
 
@@ -32,7 +31,7 @@ module OliveBranch
     end
 
     def transform_body?(inflection, headers)
-      inflection && OliveBranch.configuration.content_type_check.call(headers['Content-Type'])
+      inflection && OliveBranch.configuration.content_type_check.call(headers['Content-Type'.freeze])
     end
 
     def transform_body(body, inflection)
@@ -51,9 +50,9 @@ module OliveBranch
     end
 
     def inflection_method(inflection)
-      if inflection == 'camel'
+      if inflection == 'camel'.freeze
         OliveBranch.configuration.camelize
-      elsif inflection == 'dash'
+      elsif inflection == 'dash'.freeze
         OliveBranch.configuration.dasherize
       else
         # probably misconfigured, do nothing
