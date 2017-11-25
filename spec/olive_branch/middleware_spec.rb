@@ -1,6 +1,10 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
 RSpec.describe OliveBranch::Middleware do
+  before :each do
+    OliveBranch.reset_configuration
+  end
+
   describe 'modifying request' do
     let(:params) do
       {
@@ -83,8 +87,10 @@ RSpec.describe OliveBranch::Middleware do
     end
 
     context 'with a custom content type check' do
-      let(:content_type_check) do
-        ->(content_type) { content_type == 'foo/type' }
+      before :each do
+        OliveBranch.configure do |config|
+          config.content_type_check = ->(content_type) { content_type == 'foo/type' }
+        end
       end
 
       it 'snake cases incoming params if content-type matches the custom check' do
@@ -100,7 +106,7 @@ RSpec.describe OliveBranch::Middleware do
           'HTTP_X_KEY_INFLECTION' => 'camel'
         )
 
-        described_class.new(app, content_type_check: content_type_check).call(env)
+        described_class.new(app).call(env)
 
         expect(incoming_params['post']['author_name']).not_to be_nil
       end
@@ -118,7 +124,7 @@ RSpec.describe OliveBranch::Middleware do
           'HTTP_X_KEY_INFLECTION' => 'camel'
         )
 
-        described_class.new(app, content_type_check: content_type_check).call(env)
+        described_class.new(app).call(env)
 
         expect(incoming_params['post']['authorName']).not_to be_nil
       end
@@ -241,8 +247,10 @@ RSpec.describe OliveBranch::Middleware do
     end
 
     context 'with custom camelize method' do
-      let(:camelize) do
-        ->(string) { "camel#{string}" }
+      before :each do
+        OliveBranch.configure do |config|
+          config.camelize = ->(string) { "camel#{string}" }
+        end
       end
 
       it 'uses the custom camelize method' do
@@ -254,7 +262,7 @@ RSpec.describe OliveBranch::Middleware do
           ]
         end
 
-        request = Rack::MockRequest.new(described_class.new(app, camelize: camelize))
+        request = Rack::MockRequest.new(described_class.new(app))
 
         response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
 
@@ -264,8 +272,10 @@ RSpec.describe OliveBranch::Middleware do
     end
 
     context 'with custom dasherize method' do
-      let(:dasherize) do
-        ->(string) { "dash#{string}" }
+      before :each do
+        OliveBranch.configure do |config|
+          config.dasherize = ->(string) { "dash#{string}" }
+        end
       end
 
       it 'uses the custom dasherize method' do
@@ -277,7 +287,7 @@ RSpec.describe OliveBranch::Middleware do
           ]
         end
 
-        request = Rack::MockRequest.new(described_class.new(app, dasherize: dasherize))
+        request = Rack::MockRequest.new(described_class.new(app))
 
         response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'dash')
 
@@ -287,6 +297,12 @@ RSpec.describe OliveBranch::Middleware do
     end
 
     context 'with a default inflection' do
+      before :each do
+        OliveBranch.configure do |config|
+          config.default_inflection = 'camel'
+        end
+      end
+
       it 'uses the default inflection' do
         app = lambda do |_env|
           [
@@ -296,7 +312,7 @@ RSpec.describe OliveBranch::Middleware do
           ]
         end
 
-        request = Rack::MockRequest.new(described_class.new(app, inflection: 'camel'))
+        request = Rack::MockRequest.new(described_class.new(app))
 
         response = request.get('/')
 

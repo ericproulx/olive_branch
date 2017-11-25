@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'olive_branch/middleware'
 
 module OliveBranch

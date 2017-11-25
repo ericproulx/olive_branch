@@ -1,4 +1,4 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
 BENCHMARK_REPETITIONS ||= Integer(ENV['BENCHMARK_REPETITIONS'] || 0)
 

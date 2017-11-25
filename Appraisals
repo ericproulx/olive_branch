@@ -1,15 +1,5 @@
-appraise "rails-4.1" do
-  gem "rails", "~> 4.1"
-end
-
-appraise "rails-4.2" do
-  gem "rails", "~> 4.2"
-end
-
-appraise "rails-5.0" do
-  gem "rails", "~> 5.0"
-end
-
-appraise "rails-5.1" do
-  gem "rails", "~> 5.1"
+%w(4.0 4.1 4.2 5.0 5.1).each do |rails_version|
+  appraise "rails-#{rails_version}" do
+    gem 'rails', "~> #{rails_version}"
+  end
 end

@@ -1,4 +1,4 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
 RSpec.describe 'Integration Test', type: :request do
   let(:url) { '/posts/1234?categoryFilter[categoryName][]=food' }
