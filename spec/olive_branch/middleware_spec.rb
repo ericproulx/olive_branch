@@ -16,74 +16,47 @@ RSpec.describe OliveBranch::Middleware do
       }
     end
 
-    it 'snake cases incoming params if content-type JSON and inflection header present' do
-      incoming_params = nil
-
-      app = lambda do |env|
-        incoming_params = env['action_dispatch.request.request_parameters']
+    before :each do
+      @request_params = nil
+      @query_params = nil
+      @app = ->(env) {
+        @request_params = env['action_dispatch.request.request_parameters']
+        @query_params = env['action_dispatch.request.query_parameters']
         [200, {}, ['{}']]
-      end
-
-      env = params.merge(
-        'CONTENT_TYPE' => 'application/json',
-        'HTTP_X_KEY_INFLECTION' => 'camel'
-      )
-
-      described_class.new(app).call(env)
-
-      expect(incoming_params['post']['author_name']).not_to be_nil
+      }
     end
 
-    it 'snake cases incoming query params if content-type JSON and inflection header present' do
-      incoming_params = nil
-
-      app = lambda do |env|
-        incoming_params = env['action_dispatch.request.query_parameters']
-        [200, {}, ['{}']]
+    context 'when content-type JSON and inflection header present' do
+      it 'snake cases incoming params' do
+        env = params.merge(
+          'CONTENT_TYPE' => 'application/json',
+          'HTTP_X_KEY_INFLECTION' => 'camel',
+          'QUERY_STRING' => 'categoryFilter[categoryName]=economics'
+        )
+        described_class.new(@app).call(env)
+        expect(@request_params['post']['author_name']).not_to be_nil
+        expect(@query_params['category_filter']['category_name']).to eq 'economics'
       end
-
-      env = params.merge(
-        'CONTENT_TYPE' => 'application/json',
-        'HTTP_X_KEY_INFLECTION' => 'camel',
-        'QUERY_STRING' => 'categoryFilter[categoryName]=economics'
-      )
-
-      described_class.new(app).call(env)
-
-      expect(incoming_params['category_filter']['category_name']).to eq 'economics'
     end
 
-    it 'does not modify incoming params if content-type not JSON' do
-      incoming_params = nil
+    context 'when content-type not JSON' do
+      it 'does not modify incoming params' do
+        env = params.merge(
+          'CONTENT_TYPE' => 'text/html',
+          'HTTP_X_KEY_INFLECTION' => 'camel'
+        )
 
-      app = lambda do |env|
-        incoming_params = env['action_dispatch.request.request_parameters']
-        [200, {}, ['{}']]
+        described_class.new(@app).call(env)
+        expect(@request_params['post']['authorName']).not_to be_nil
       end
-
-      env = params.merge(
-        'CONTENT_TYPE' => 'text/html',
-        'HTTP_X_KEY_INFLECTION' => 'camel'
-      )
-
-      described_class.new(app).call(env)
-
-      expect(incoming_params['post']['authorName']).not_to be_nil
     end
 
-    it 'does not modify incoming params if inflection header missing' do
-      incoming_params = nil
-
-      app = lambda do |env|
-        incoming_params = env['action_dispatch.request.request_parameters']
-        [200, {}, ['{}']]
+    context 'when inflection header missing' do
+      it 'does not modify incoming params' do
+        env = params.merge('CONTENT_TYPE' => 'application/json')
+        described_class.new(@app).call(env)
+        expect(@request_params['post']['authorName']).not_to be_nil
       end
-
-      env = params.merge('CONTENT_TYPE' => 'application/json')
-
-      described_class.new(app).call(env)
-
-      expect(incoming_params['post']['authorName']).not_to be_nil
     end
 
     context 'with a custom content type check' do
@@ -94,156 +67,88 @@ RSpec.describe OliveBranch::Middleware do
       end
 
       it 'snake cases incoming params if content-type matches the custom check' do
-        incoming_params = nil
-
-        app = lambda do |env|
-          incoming_params = env['action_dispatch.request.request_parameters']
-          [200, {}, ['{}']]
-        end
-
         env = params.merge(
           'CONTENT_TYPE' => 'foo/type',
           'HTTP_X_KEY_INFLECTION' => 'camel'
         )
-
-        described_class.new(app).call(env)
-
-        expect(incoming_params['post']['author_name']).not_to be_nil
+        described_class.new(@app).call(env)
+        expect(@request_params['post']['author_name']).not_to be_nil
       end
 
       it 'does not modify incoming params if content-type not matching custom check' do
-        incoming_params = nil
-
-        app = lambda do |env|
-          incoming_params = env['action_dispatch.request.request_parameters']
-          [200, {}, ['{}']]
-        end
-
         env = params.merge(
           'CONTENT_TYPE' => 'application/json',
           'HTTP_X_KEY_INFLECTION' => 'camel'
         )
-
-        described_class.new(app).call(env)
-
-        expect(incoming_params['post']['authorName']).not_to be_nil
+        described_class.new(@app).call(env)
+        expect(@request_params['post']['authorName']).not_to be_nil
       end
     end
   end
 
   describe 'modifying response' do
-    it 'camel-cases response if JSON and inflection header present' do
-      app = lambda do |_env|
-        [
-          200,
-          { 'Content-Type' => 'application/json' },
-          ['{"post":{"author_name":"Adam Smith","author-hobby":"Economics"}}']
-        ]
+    let(:http_status) { 200 }
+    let(:headers) { { 'Content-Type' => 'application/json' } }
+    let(:app) { ->(_env) { [http_status, headers, body] } }
+    let(:request) { Rack::MockRequest.new(described_class.new(app)) }
+    let(:body) { ['{"author_name":"Adam Smith"}']  }
+
+    context 'when JSON and inflection header present' do
+      context 'when hash' do
+        it 'camel-cases response' do
+          response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
+          expect(JSON.parse(response.body)['authorName']).not_to be_nil
+          expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
+        end
+
+        it 'dash-cases response' do
+          response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'dash')
+          expect(JSON.parse(response.body)['author-name']).not_to be_nil
+          expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
+        end
       end
 
-      request = Rack::MockRequest.new(described_class.new(app))
+      context 'when array' do
+        let(:body) { ['[{"author_name":"Adam Smith"}]']  }
 
-      response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
+        it 'camel-cases array response' do
+          response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
+          expect(JSON.parse(response.body)[0]['authorName']).not_to be_nil
+          expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
+        end
 
-      expect(JSON.parse(response.body)['post']['authorName']).not_to be_nil
-      expect(JSON.parse(response.body)['post']['authorHobby']).not_to be_nil
+        it 'dash-cases array response' do
+          response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'dash')
+          expect(JSON.parse(response.body)[0]['author-name']).not_to be_nil
+          expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
+        end
+      end
     end
 
-    it 'camel-cases array response if JSON and inflection header present' do
-      app = lambda do |_env|
-        [
-          200,
-          { 'Content-Type' => 'application/json' },
-          ['[{"author_name":"Adam Smith","author-hobby":"Economics"}]']
-        ]
+    context 'when not JSON' do
+      let(:headers) { { 'Content-Type' => 'text/html' } }
+      it 'does not modify response' do
+        response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
+        expect(JSON.parse(response.body)['author_name']).not_to be_nil
+        expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
       end
-
-      request = Rack::MockRequest.new(described_class.new(app))
-
-      response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
-
-      expect(JSON.parse(response.body)[0]['authorName']).not_to be_nil
-      expect(JSON.parse(response.body)[0]['authorHobby']).not_to be_nil
     end
 
-    it 'dash-cases response if JSON and inflection header present' do
-      app = lambda do |_env|
-        [
-          200,
-          { 'Content-Type' => 'application/json' },
-          ['{"post":{"author_name":"Adam Smith"}}']
-        ]
+    context 'when inflection header is missing' do
+      it 'does not modify response if inflection header missing' do
+        response = request.get('/')
+        expect(JSON.parse(response.body)['author_name']).not_to be_nil
+        expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
       end
-
-      request = Rack::MockRequest.new(described_class.new(app))
-
-      response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'dash')
-
-      expect(JSON.parse(response.body)['post']['author-name']).not_to be_nil
     end
 
-    it 'dash-cases array response if JSON and inflection header present' do
-      app = lambda do |_env|
-        [
-          200,
-          { 'Content-Type' => 'application/json' },
-          ['[{"author_name":"Adam Smith"}]']
-        ]
+    context 'when invalid json' do
+      let(:body) { ['{"post":{"author_name":"Adam Smith"}']}
+      it 'does not modify response if invalid JSON' do
+        response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
+        expect(response.body =~ /author_name/).not_to be_nil
+        expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
       end
-
-      request = Rack::MockRequest.new(described_class.new(app))
-
-      response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'dash')
-
-      expect(JSON.parse(response.body)[0]['author-name']).not_to be_nil
-    end
-
-    it 'does not modify response if not JSON ' do
-      app = lambda do |_env|
-        [
-          200,
-          { 'Content-Type' => 'text/html' },
-          ['{"post":{"author_name":"Adam Smith"}}']
-        ]
-      end
-
-      request = Rack::MockRequest.new(described_class.new(app))
-
-      response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
-
-      expect(JSON.parse(response.body)['post']['author_name']).not_to be_nil
-    end
-
-    it 'does not modify response if inflection header missing' do
-      app = lambda do |_env|
-        [
-          200,
-          { 'Content-Type' => 'application/json' },
-          ['{"post":{"author_name":"Adam Smith"}}']
-        ]
-      end
-
-      request = Rack::MockRequest.new(described_class.new(app))
-
-      response = request.get('/')
-
-      expect(JSON.parse(response.body)['post']['author_name']).not_to be_nil
-    end
-
-    it 'does not modify response if invalid JSON' do
-      app = lambda do |_env|
-        [
-          200,
-          { 'Content-Type' => 'application/json' },
-          ['{"post":{"author_name":"Adam Smith"}']
-        ]
-      end
-
-      request = Rack::MockRequest.new(described_class.new(app))
-
-      response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
-
-      expect(response.body =~ /author_name/).not_to be_nil
     end
 
     context 'with custom camelize method' do
@@ -254,20 +159,9 @@ RSpec.describe OliveBranch::Middleware do
       end
 
       it 'uses the custom camelize method' do
-        app = lambda do |_env|
-          [
-            200,
-            { 'Content-Type' => 'application/json' },
-            ['{"post":{"author_name":"Adam Smith","author-hobby":"Economics"}}']
-          ]
-        end
-
-        request = Rack::MockRequest.new(described_class.new(app))
-
         response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'camel')
-
-        expect(JSON.parse(response.body)['camelpost']['camelauthor_name']).not_to be_nil
-        expect(JSON.parse(response.body)['camelpost']['camelauthor-hobby']).not_to be_nil
+        expect(JSON.parse(response.body)['camelauthor_name']).not_to be_nil
+        expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
       end
     end
 
@@ -279,24 +173,13 @@ RSpec.describe OliveBranch::Middleware do
       end
 
       it 'uses the custom dasherize method' do
-        app = lambda do |_env|
-          [
-            200,
-            { 'Content-Type' => 'application/json' },
-            ['{"post":{"author_name":"Adam Smith","author-hobby":"Economics"}}']
-          ]
-        end
-
-        request = Rack::MockRequest.new(described_class.new(app))
-
         response = request.get('/', 'HTTP_X_KEY_INFLECTION' => 'dash')
-
-        expect(JSON.parse(response.body)['dashpost']['dashauthor_name']).not_to be_nil
-        expect(JSON.parse(response.body)['dashpost']['dashauthor-hobby']).not_to be_nil
+        expect(JSON.parse(response.body)['dashauthor_name']).not_to be_nil
+        expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
       end
     end
 
-    context 'with a default inflection' do
+    context 'with custom default inflection' do
       before :each do
         OliveBranch.configure do |config|
           config.default_inflection = 'camel'
@@ -304,19 +187,9 @@ RSpec.describe OliveBranch::Middleware do
       end
 
       it 'uses the default inflection' do
-        app = lambda do |_env|
-          [
-            200,
-            { 'Content-Type' => 'application/json' },
-            ['{"post":{"author_name":"Adam Smith"}}']
-          ]
-        end
-
-        request = Rack::MockRequest.new(described_class.new(app))
-
         response = request.get('/')
-
-        expect(JSON.parse(response.body)['post']['authorName']).not_to be_nil
+        expect(JSON.parse(response.body)['authorName']).not_to be_nil
+        expect(response.headers['Content-Length']).to eq(response.body.bytesize.to_s)
       end
     end
   end
