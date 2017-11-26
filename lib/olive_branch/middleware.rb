@@ -20,7 +20,7 @@ module OliveBranch
       status, headers, body = @app.call(env)
       return [status, headers, body] unless transform_body?(inflection, headers)
       new_body = transform_body(body, inflection)
-      headers['Content-Length'.freeze] = new_body.length.to_s
+      headers['Content-Length'.freeze] = new_body.join.bytesize.to_s
       [status, headers, new_body]
     end
 
