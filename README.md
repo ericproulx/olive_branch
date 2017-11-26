@@ -14,7 +14,7 @@ This gem lets your API users pass in and receive camelCased or dash-cased keys, 
         
 ## Use Rails
 
-The middleware will be automatically added through Railtie
+The middleware will be automatically added through `Railtie`
 
 Include a `X-Key-Inflection` header with values of `camel`, `dash`, or `snake` in your JSON API requests.
 
