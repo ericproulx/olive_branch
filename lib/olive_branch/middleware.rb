@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'olive_branch/transformations'
 require 'olive_branch/configuration'
 require 'json'

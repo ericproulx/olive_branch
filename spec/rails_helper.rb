@@ -1,12 +1,24 @@
 # frozen_string_literal: true
 
-# This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../test_app/config/environment', __FILE__)
+if ENV['BUNDLE_GEMFILE'] =~ /5.1/
+  require File.expand_path('../test_app_5_1/config/environment', __FILE__)
+elsif ENV['BUNDLE_GEMFILE'] =~ /5.0/
+  require File.expand_path('../test_app_5_0/config/environment', __FILE__)
+elsif ENV['BUNDLE_GEMFILE'] =~ /4.2/
+  require File.expand_path('../test_app_4_2/config/environment', __FILE__)
+elsif ENV['BUNDLE_GEMFILE'] =~ /4.1/
+  require File.expand_path('../test_app_4_1/config/environment', __FILE__)
+elsif ENV['BUNDLE_GEMFILE'] =~ /4.0/
+  require File.expand_path('../test_app_4_0/config/environment', __FILE__)
+end
+
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
+require 'olive_branch'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -26,7 +38,11 @@ require 'rspec/rails'
 
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
-ActiveRecord::Migration.maintain_test_schema!
+if Rails.version.to_f >= 4.1
+  ActiveRecord::Migration.maintain_test_schema!
+elsif Rails.version.to_f >= 4.0
+  ActiveRecord::Migration.check_pending!
+end
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

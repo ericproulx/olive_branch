@@ -1,0 +1,179 @@
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:30:39 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"author_name"=>"John Smith"}, "category_filter"=>{"category_name"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:30:39 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"author_name"=>"John Smith"}, "category_filter"=>{"category_name"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:30:39 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"author_name"=>"John Smith"}, "category_filter"=>{"category_name"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:30:39 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"authorName"=>"John Smith"}, "categoryFilter"=>{"categoryName"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:30:39 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"authorName"=>"John Smith"}, "categoryFilter"=>{"categoryName"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:30:39 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"authorName"=>"John Smith"}, "categoryFilter"=>{"categoryName"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.2ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (2.2ms)[0m  select sqlite_version(*)
+  [1m[36m (0.2ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.1ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:31:09 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"author_name"=>"John Smith"}, "category_filter"=>{"category_name"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:31:09 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"author_name"=>"John Smith"}, "category_filter"=>{"category_name"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:31:09 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"author_name"=>"John Smith"}, "category_filter"=>{"category_name"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:31:09 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"authorName"=>"John Smith"}, "categoryFilter"=>{"categoryName"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:31:09 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"authorName"=>"John Smith"}, "categoryFilter"=>{"categoryName"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+Started PUT "/posts/1234?categoryFilter[categoryName][]=food" for 127.0.0.1 at 2018-01-11 20:31:09 -0500
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"authorName"=>"John Smith"}, "categoryFilter"=>{"categoryName"=>["food"]}, "postId"=>"1234"}
+Completed 200 OK in 0ms (Views: 0.1ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  rollback transaction
