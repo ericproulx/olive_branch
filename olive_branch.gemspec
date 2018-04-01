@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 require 'olive_branch/version'
@@ -13,6 +15,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/vigetlabs/olive_branch'
   s.license     = 'MIT'
 
+  s.add_dependency 'actionpack', '>= 4.0'
   s.add_dependency 'activesupport', '>= 4.0'
 
   s.add_development_dependency 'appraisal'

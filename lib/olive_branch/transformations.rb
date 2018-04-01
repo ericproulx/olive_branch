@@ -2,6 +2,7 @@
 
 require 'active_support/core_ext/hash'
 require 'active_support/core_ext/string'
+require 'action_dispatch'
 
 class Transformations
   class << self

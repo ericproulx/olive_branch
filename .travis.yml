@@ -1,14 +1,11 @@
-env:
-  global:
-    - CC_TEST_REPORTER_ID=fc001a9a4b7f457d2a61f2d5263e7e0dbc5bc71e419fb3544ed659ed5d745cd7
 language: ruby
 sudo: false
 cache: bundler
 rvm:
-  - 2.2.9
-  - 2.3.6
-  - 2.4.3
-  - 2.5.0
+  - 2.2.10
+  - 2.3.7
+  - 2.4.4
+  - 2.5.1
 gemfile:
   - gemfiles/rails_4.0.gemfile
   - gemfiles/rails_4.1.gemfile
@@ -17,23 +14,16 @@ gemfile:
   - gemfiles/rails_5.1.gemfile
 matrix:
  exclude:
-  - rvm: 2.4.3
+  - rvm: 2.4.4
     gemfile: gemfiles/rails_4.0.gemfile
-  - rvm: 2.4.3
+  - rvm: 2.4.4
     gemfile: gemfiles/rails_4.1.gemfile
-  - rvm: 2.5.0
+  - rvm: 2.5.1
     gemfile: gemfiles/rails_4.0.gemfile
-  - rvm: 2.5.0
+  - rvm: 2.5.1
     gemfile: gemfiles/rails_4.1.gemfile
 before_install:
   - gem update --system
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
 script:
   - bundle exec rspec
   - bundle exec rubocop -- parallel
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
